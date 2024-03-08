@@ -1,58 +1,87 @@
-const taskInput = document.getElementById("task-input");
-const addTask = document.querySelector(".add-task");
-const searchInput = document.getElementById("search-input");
-const clearTask = document.querySelector(".clear-task");
-const taskContainer = document.querySelector(".task-container");
-
-function makeTaskElement() {
-  const taskName = document.createElement("div");
-  const deleteBtn = document.createElement("button");
-  const editBtn = document.createElement("button");
-  const task = document.createElement("div");
-
-  // add class in Element
-  deleteBtn.classList.add("delete", "btn");
-  editBtn.classList.add("edit", "btn");
-  taskName.classList.add("task-name");
-  task.classList.add("task");
-
-  task.addEventListener("click", function (e) {
-    addFunctionalityOnOtherElements(e.target);
-  });
-
-  // fill text in Element
-  deleteBtn.innerText = "Delete";
-  editBtn.innerText = "Edit";
-  taskName.innerText = taskInput.value;
-
-  task.append(taskName, deleteBtn, editBtn);
-  taskContainer.appendChild(task);
-
-  taskInput.value = "";
+function qS(selector) {
+  return document.querySelector(selector);
 }
 
-function deleteAllTaskElement() {
-  document.querySelectorAll(".task").forEach((Item) => Item.remove());
-}
+const taskInput = qS("#task-input");
+const addTask = qS(".add-task");
+const searchInput = qS("#search-input");
+const clearTaskButton = qS(".clear-task");
+const taskContainer = qS(".task-container");
+const container = qS(".container");
+const fragment = document.createDocumentFragment();
 
-function addFunctionalityOnOtherElements(getElement) {
-  if (getElement.classList[0] === "delete") {
-    document.querySelector(".task").remove();
+// Function to create and fix elements
+function makeAndFixElement(ele, attType, attName, appendWith) {
+  const element = document.createElement(ele);
+
+  if (attType && attName) {
+    element.setAttribute(attType, attName);
+  }
+  if (appendWith) {
+    appendWith.append(element);
   }
 
-  if (getElement.classList[0] === "edit") {
-    const taskName = document
-      .querySelectorAll(".task-name")
-      .forEach((taskText) => {
-        return taskText;
-      });
-
-    console.log(taskName);
-  }
+  return element;
 }
 
-// add click event on addTask button for creating task element;
-addTask.addEventListener("click", makeTaskElement);
+addTask.addEventListener("click", () => {
+  if (taskInput.value.length === 0) {
+    alert("please fill text in your Input");
+  } else {
+    const taskDiv = makeAndFixElement(
+      "div",
+      "class",
+      "task-div",
+      taskContainer
+    );
+    const taskName = makeAndFixElement(
+      "div",
+      "class",
+      "task-name",
+      taskContainer
+    );
+    const deleteButton = makeAndFixElement(
+      "button",
+      "class",
+      "delete-btn btn",
+      taskContainer
+    );
+    const editButton = makeAndFixElement(
+      "button",
+      "class",
+      "edit-btn btn",
+      taskContainer
+    );
 
-// add Delete Functionality to Delete All Task Element Select Elements
-clearTask.addEventListener("click", deleteAllTaskElement);
+    // fill text in element
+    taskName.textContent = taskInput.value;
+    deleteButton.innerText = "Delete";
+    editButton.innerText = "Edit";
+
+    // add event on taskDiv
+    taskDiv.addEventListener("click", function (event) {
+      addFunctionalityOnOtherElement(event);
+    });
+
+    taskDiv.append(taskName, deleteButton, editButton);
+    taskContainer.append(taskDiv);
+    fragment.append(container);
+    document.body.append(fragment);
+
+    taskInput.value = "";
+  }
+});
+
+function addFunctionalityOnOtherElement(detials) {
+  if (detials.target.classList[0] === "delete-btn") {
+    document.querySelector(".task-div").remove();
+  }
+  if (detials.target.classList[0] === "edit-btn") {
+    const getTaskNameText =
+      detials.target.parentElement.querySelector(".task-name");
+    let user = prompt("change your text as you want");
+
+    let getText = getTaskNameText.innerText;
+    getTaskNameText.innerText = `${getText} ${user}`;
+  }
+}

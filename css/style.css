@@ -48,16 +48,17 @@ input::placeholder {
   color: white;
 }
 
-.search-input {
+.search-container {
   width: 50%;
   height: 50px;
   display: flex;
   align-items: start;
+  flex-direction: column;
   justify-content: start;
   margin: 2px auto;
 }
 
-.search-input input {
+.search-container input {
   background-color: rgb(72, 72, 72);
   color: silver;
   width: 150px;
@@ -107,19 +108,44 @@ span {
   color: transparent;
 }
 
-.task {
-  padding: 3px;
-  color: white;
-  background-color: rgb(72, 72, 72);
+.task-div {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 5px;
 }
 
 .task-name {
-  padding: 8px;
-  background-color: rgb(42, 42, 42);
-  font-size: 12px;
-  border-radius: 5px;
   color: white;
+  text-transform: capitalize;
+  font-size: 13px;
+  padding-right: 10px;
+}
+
+.btn {
+  background-color: rgb(53, 53, 53);
+  padding: 5px 10px;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.search-item {
+  width: 100%;
+  background-color: black;
+  padding: 8px;
+  border-radius: 5px;
+  z-index: 99999;
+  color: white;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.item {
+  border-radius: 2px;
+  padding: 8px;
+}
+.item:hover {
+  transition: ease;
+  background-color: rgb(45, 45, 45);
 }
